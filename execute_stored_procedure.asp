@@ -6,30 +6,40 @@
 
 <body>
 <%
-set conn = Server.CreateObject("ADODB.Connection")
+Set conn = Server.CreateObject("ADODB.Connection")
 conn.open = Application("connectionString") 
-set rs = CreateObject("ADODB.Recordset")
+Set cmd = CreateObject("ADODB.Command")
 
+With cmd
+.ActiveConnection = conn
+.CommandType = 4 ' adCmdStoredProc
+.CommandText = "MultipleInsert" ' Stored Procedure name
 
-Dim abbreviation
-abbreviation = "aueb"
+cmd.Parameters("@FacultyAbbreviation") = "TestFacultyAbbreviation"
+cmd.Parameters("@FacultyName") = "TestFacultyName"
+cmd.Parameters("@FacultyWebsite") = "TestFacultyWebsite"
+cmd.Parameters("@FacultyEmail") = "TestFacultyEmail"
+cmd.Parameters("@FacultyPhone") = "TestFacultyPhone"
+cmd.Parameters("@UniversityId") = 1
 
-query= "SELECT * FROM Universities WHERE Abbreviation = '" & abbreviation & "'"
+cmd.Parameters("@DepartmentAbbreviation") = "TestDepartmentAbbreviation"
+cmd.Parameters("@DepartmentName") = "TestDepartmentName"
+cmd.Parameters("@DepartmentWebsite") = "TestDepartmentWebsite"
+cmd.Parameters("@DepartmentEmail") = "TestDepartmentEmail"
+cmd.Parameters("@DepartmentPhone") = "TestDepartmentPhone"
 
-rs.Open query, conn
+.Execute
 
-do until rs.EOF
-  for each row in rs.Fields
-    Response.Write(row.name)
-    Response.Write(" = ")
-    Response.Write(row.value & "<br>")
-  next
-  Response.Write("<br>")
-  rs.MoveNext
-loop
+FacultyId = cmd.Parameters("@FacultyId").Value
+DepartmentId = cmd.Parameters("@DepartmentId").Value
+End with
 
-rs.close
-conn.close
+Response.Write "Stored Procedure Results <br>"
+Response.Write "FacultyId: " & FacultyId & "<br>"
+Response.Write "DepartmentId: " & DepartmentId & "<br>"
+
+Set cmd = Nothing
+conn.close 
 %>
 </body>
 </html>
