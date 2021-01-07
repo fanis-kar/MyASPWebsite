@@ -5,7 +5,13 @@
 </head>
 
 <body>
+
+<!--#include file="include_header.asp"-->
+
 <%
+
+On Error Resume Next
+
 Set conn = Server.CreateObject("ADODB.Connection")
 conn.open = Application("connectionString")
 Set cmd = CreateObject("ADODB.Command")
@@ -34,12 +40,22 @@ With cmd
 
 ' .Parameters.Append cmd.CreateParameter("@FacultyName", adVarChar,adParamInput,255, "TestFacultyAbbreviation")
 
+GroupId = request.form("GroupId")
+Response.Write(request.form("GroupId"))
+
+If rtrim(GroupId) = "" then
+    GroupId = null
+End If
+
+FacName = ""
+
 .Parameters.Append cmd.CreateParameter("@FacultyAbbreviation", 200,1,255, "TestFacultyAbbreviation") ' varchar
-.Parameters.Append cmd.CreateParameter("@FacultyName", 200,1,255, "TestFacultyName") ' varchar
+.Parameters.Append cmd.CreateParameter("@FacultyName", 200,1,255, FacName) ' varchar
 .Parameters.Append cmd.CreateParameter("@FacultyWebsite", 200,1,255, "TestFacultyWebsite") ' varchar
 .Parameters.Append cmd.CreateParameter("@FacultyEmail", 200,1,255, "TestFacultyEmail") ' varchar
 .Parameters.Append cmd.CreateParameter("@FacultyPhone", 200,1,255, "TestFacultyPhone") ' varchar
 .Parameters.Append cmd.CreateParameter("@UniversityId", 3,1,100000, 1) ' integer
+.Parameters.Append cmd.CreateParameter("@GroupId", 3,1,100000, GroupId) ' integer
 .Parameters.Append cmd.CreateParameter("@FacultyId", 3,2) ' outut
 
 .Parameters.Append cmd.CreateParameter("DepartmentAbbreviation", 200,1,255, "TestDepartmentAbbreviation") ' varchar

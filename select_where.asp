@@ -5,6 +5,9 @@
 </head>
 
 <body>
+
+<!--#include file="include_header.asp"-->
+
 <%
 set conn = Server.CreateObject("ADODB.Connection")
 conn.open = Application("connectionString") 
