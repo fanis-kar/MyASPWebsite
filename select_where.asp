@@ -17,7 +17,7 @@ set rs = CreateObject("ADODB.Recordset")
 Dim abbreviation
 abbreviation = "aueb"
 
-query= "SELECT * FROM Universities WHERE Abbreviation = '" & abbreviation & "'"
+query= "SELECT * FROM Universities WHERE Abbreviation LIKE '%" & abbreviation & "%'"
 
 rs.Open query, conn
 
